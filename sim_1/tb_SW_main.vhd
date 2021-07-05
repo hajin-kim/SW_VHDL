@@ -28,6 +28,7 @@ architecture tb of tb_SW_main is
 			areset_n_S:	in std_logic;
 			move_in_S:	in std_logic;
 			S_in:	in std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+			init_in:	in std_logic;
 			T_in:	in std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 			
 			Max_in:	in std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
@@ -36,6 +37,7 @@ architecture tb of tb_SW_main is
 			V_in_alpha:	in std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 
 			S_out:	out std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+			init_out:	out std_logic;
 			T_out:	out std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 			
 			Max_out:	out std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
@@ -60,6 +62,7 @@ architecture tb of tb_SW_main is
 	signal tb_areset_n_S:	std_logic;
 	signal tb_move_in_S:	std_logic;
 	signal tb_S_in:	std_logic_vector(tb_SEQ_DATA_WIDTH-1 downto 0) ;
+	signal tb_init_in:	std_logic;
 	signal tb_T_in:	std_logic_vector(tb_SEQ_DATA_WIDTH-1 downto 0) ;
 
 	signal tb_Max_in:	std_logic_vector(tb_VAL_DATA_WIDTH-1 downto 0) ;
@@ -68,6 +71,7 @@ architecture tb of tb_SW_main is
 	signal tb_V_in_alpha:	std_logic_vector(tb_VAL_DATA_WIDTH-1 downto 0) ;
 
 	signal tb_S_out:	std_logic_vector(tb_SEQ_DATA_WIDTH-1 downto 0) ;
+	signal tb_init_out:	std_logic;
 	signal tb_T_out:	std_logic_vector(tb_SEQ_DATA_WIDTH-1 downto 0) ;
 
 	signal tb_Max_out:	std_logic_vector(tb_VAL_DATA_WIDTH-1 downto 0) ;
@@ -96,6 +100,7 @@ begin
 		areset_n_S	=> tb_areset_n_S,
 		move_in_S	=> tb_move_in_S,
 		S_in	=> tb_S_in,
+		init_in	=> tb_init_in,
 		T_in	=> tb_T_in,
 
 		Max_in	=> tb_Max_in,
@@ -104,6 +109,7 @@ begin
 		V_in_alpha	=> tb_V_in_alpha,
 
 		S_out	=> tb_S_out,
+		init_out	=> tb_init_out,
 		T_out	=> tb_T_out,
 
 		Max_out	=> tb_Max_out,
@@ -174,6 +180,7 @@ begin
 	-- Initial state
 		tb_move_in_S <= '0';
 		tb_S_in <= std_logic_vector(to_signed(0, tb_SEQ_DATA_WIDTH)) ;
+		tb_init_in	<= '0';
 		tb_T_in <= std_logic_vector(to_signed(0, tb_SEQ_DATA_WIDTH)) ;
 
 		tb_Max_in <= std_logic_vector(to_signed(0, tb_VAL_DATA_WIDTH)) ;
@@ -193,30 +200,37 @@ begin
 
 		wait for 15ns;
 
-	-- S1
+	-- Begin S
+		-- S1
 		tb_move_in_S <= '1';
 		tb_S_in <= "00";
 		wait for 10ns;
-	-- S2
+		-- S2
 		tb_move_in_S <= '1';
 		tb_S_in <= "10";
 		wait for 10ns;
-	-- S3
+		-- S3
 		tb_move_in_S <= '1';
 		tb_S_in <= "01";
 		wait for 10ns;
-
+	-- End S
 		tb_move_in_S <= '0';
 
-	-- T1
+	-- Begin T
+		-- T1
+		tb_init_in	<= '1';
 		tb_T_in <= "00";
 		wait for 10ns;
-	-- T2
+		-- T2
+		tb_init_in	<= '1';
 		tb_T_in <= "00";
 		wait for 10ns;
-	-- T3
+		-- T3
+		tb_init_in	<= '1';
 		tb_T_in <= "10";
 		wait for 10ns;
+	-- End T
+		tb_init_in	<= '0';
 
 	-- Loop
 		while (true) loop
