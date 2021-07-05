@@ -131,7 +131,6 @@ architecture SW_PE_arch of SW_PE is
 	signal sig_DFF_E_out:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 -- F_out
 	signal sig_F_in_beta:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
-	signal sig_V_in_alpha:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 	signal sig_DFF_F_out:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 -- V_out
 	signal sig_DFF_max_E_F:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
@@ -283,7 +282,7 @@ begin
 			clock	=> clock_d2,
 			areset_n	=> areset_n,
 			A_in	=> sig_F_in_beta,
-			B_in	=> sig_V_in_alpha,
+			B_in	=> V_in_alpha,
 			Max_out	=> sig_DFF_F_out
 	);
 
