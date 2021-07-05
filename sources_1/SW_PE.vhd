@@ -249,6 +249,8 @@ begin
 			Sub_out	=> sig_self_V_in_alpha
 	);
 
+	V_out_alpha <= sig_self_V_in_alpha;
+
 	signed_max_DFF_E_out:	signed_max_DFF
 	generic map (
 		DATA_WIDTH => VAL_DATA_WIDTH
