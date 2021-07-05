@@ -122,6 +122,7 @@ architecture SW_PE_arch of SW_PE is
 -- Sequence flow
 	signal sig_DFF_S_out:	std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 	signal sig_DFF_init_out:	std_logic;
+	signal sig_init_in:	std_logic_vector(0 downto 0) ;
 	signal sig_DFF_T_out:	std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 	signal sig_clock_S_out:	std_logic ;
 -- V_diag_sigma
@@ -158,7 +159,7 @@ begin
 	port map (
 		clock	=> sig_clock_S_out,
 		areset_n	=> areset_n_S,
-		avail	=> init_in,
+		avail	=> sig_init_in,
 		D_in	=> S_in,
 		Q_out	=> sig_DFF_S_out
 	);
@@ -175,11 +176,12 @@ begin
 	port map (
 		clock	=> clock,
 		areset_n	=> areset_n,
-		avail	=> init_in,
-		D_in	=> init_in,
+		avail	=> sig_init_in,
+		D_in	=> sig_init_in,
 		Q_out	=> sig_DFF_init_out
 	);
 
+	sig_init_in(0)	<= init_in;
 	init_out <= sig_DFF_init_out;
 
 
@@ -190,7 +192,7 @@ begin
 	port map (
 		clock	=> clock,
 		areset_n	=> areset_n,
-		avail	=> init_in,
+		avail	=> sig_init_in,
 		D_in	=> T_in,
 		Q_out	=> sig_DFF_T_out
 	);
@@ -207,7 +209,7 @@ begin
 	port map (
 		clock	=> clock,
 		areset_n	=> areset_n,
-		avail	=> init_in,
+		avail	=> sig_init_in,
 		D_in	=> V_in,
 		Q_out	=> sig_DFF_V_diag
 	);
@@ -245,7 +247,7 @@ begin
 	port map (
 		clock	=> clock_d3,
 		areset_n	=> sig_reset_dff_v_diag_sigma,
-		avail	=> init_in,
+		avail	=> sig_init_in,
 		D_in	=> sig_V_diag_sigma,
 		Q_out	=> sig_DFF_V_diag_sigma
 	);
@@ -284,7 +286,7 @@ begin
 	port map (
 		clock	=> clock_d2,
 		areset_n	=> areset_n,
-		avail	=> init_in,
+		avail	=> sig_init_in,
 		A_in	=> sig_E_in_beta,
 		B_in	=> sig_self_V_in_alpha,
 		Max_out	=> sig_DFF_E_out
@@ -310,7 +312,7 @@ begin
 	port map (
 		clock	=> clock_d2,
 		areset_n	=> areset_n,
-		avail	=> init_in,
+		avail	=> sig_init_in,
 		A_in	=> sig_F_in_beta,
 		B_in	=> V_in_alpha,
 		Max_out	=> sig_DFF_F_out
@@ -327,7 +329,7 @@ begin
 	port map (
 		clock	=> clock_d3,
 		areset_n	=> areset_n,
-		avail	=> init_in,
+		avail	=> sig_init_in,
 		A_in	=> sig_DFF_E_out,
 		B_in	=> sig_DFF_F_out,
 		Max_out	=> sig_DFF_max_E_F
@@ -340,7 +342,7 @@ begin
 	port map (
 		clock	=> clock,
 		areset_n	=> areset_n,
-		avail	=> init_in,
+		avail	=> sig_init_in,
 		A_in	=> sig_DFF_max_E_F,
 		B_in	=> sig_DFF_V_diag_sigma,
 		Max_out	=> sig_DFF_V_out
@@ -357,7 +359,7 @@ begin
 	port map (
 		clock	=> clock,
 		areset_n	=> areset_n,
-		avail	=> init_in,
+		avail	=> sig_init_in,
 		A_in	=> max_in,
 		B_in	=> sig_DFF_V_out,
 		Max_out	=> sig_DFF_Max_out
