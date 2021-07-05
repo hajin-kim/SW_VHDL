@@ -22,6 +22,7 @@ entity SW_PE_array is
 		areset_n_S:	in std_logic;
 		move_in_S:	in std_logic;
 		S_in:	in std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+		init_in:	in std_logic;
 		T_in:	in std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 		
 		Max_in:	in std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
@@ -30,6 +31,7 @@ entity SW_PE_array is
 		V_in_alpha:	in std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 
 		S_out:	out std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+		init_out:	out std_logic;
 		T_out:	out std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 		
 		Max_out:	out std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
@@ -61,6 +63,7 @@ architecture SW_PE_array_arch of SW_PE_array is
 			areset_n_S:	in std_logic;
 			move_in_S:	in std_logic;
 			S_in:	in std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+			init_in:	in std_logic;
 			T_in:	in std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 			
 			Max_in:	in std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
@@ -69,6 +72,7 @@ architecture SW_PE_array_arch of SW_PE_array is
 			V_in_alpha:	in std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 
 			S_out:	out std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+			init_out:	out std_logic;
 			T_out:	out std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 			
 			Max_out:	out std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
@@ -79,11 +83,12 @@ architecture SW_PE_array_arch of SW_PE_array is
 		) ;
 	end component ; -- SW_PE
 
-
+	type sig_array is array (0 to NUM_PE) of std_logic;
 	type seq_slv_array is array (0 to NUM_PE) of std_logic_vector(SEQ_DATA_WIDTH-1 downto 0);
 	type val_slv_array is array (0 to NUM_PE) of std_logic_vector(VAL_DATA_WIDTH-1 downto 0);
 
 	signal sig_S:	seq_slv_array;
+	signal sig_init_in:	sig_array;
 	signal sig_T:	seq_slv_array;
 	
 	signal sig_Max:	val_slv_array;
@@ -115,6 +120,7 @@ begin
 			areset_n_S	=> areset_n_S,
 			move_in_S	=> move_in_S,
 			S_in	=> sig_S(NUM_PE-i),
+			init_in	=> sig_init_in(i),
 			T_in	=> sig_T(i),
 
 			Max_in	=> sig_Max(i),
@@ -123,6 +129,7 @@ begin
 			V_in_alpha	=> sig_V_alpha(i),
 
 			S_out	=> sig_S(NUM_PE-i-1),
+			init_out	=> sig_init_in(i+1),
 			T_out	=> sig_T(i+1),
 
 			Max_out	=> sig_Max(i+1),
@@ -134,6 +141,7 @@ begin
 	end generate gen_SW_PE; -- gen_SW_PE
 
 	sig_S(NUM_PE)	<= S_in;
+	sig_init_in(0)	<= init_in;
 	sig_T(0)	<= T_in;
 	sig_Max(0)	<= Max_in;
 	sig_F(0)	<= F_in;
@@ -141,6 +149,7 @@ begin
 	sig_V_alpha(0)	<= V_in_alpha;
 
 	S_out	<= sig_S(0);
+	init_out	<= sig_init_in(NUM_PE);
 	T_out	<= sig_T(NUM_PE);
 	Max_out	<= sig_Max(NUM_PE);
 	F_out	<= sig_F(NUM_PE);

@@ -20,6 +20,7 @@ entity SW_PE is
 		areset_n_S:	in std_logic;
 		move_in_S:	in std_logic;
 		S_in:	in std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+		init_in:	in std_logic;
 		T_in:	in std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 		
 		Max_in:	in std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
@@ -28,6 +29,7 @@ entity SW_PE is
 		V_in_alpha:	in std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 
 		S_out:	out std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+		init_out:	out std_logic;
 		T_out:	out std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 		
 		Max_out:	out std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
@@ -47,6 +49,7 @@ architecture SW_PE_arch of SW_PE is
 		port (
 			clock: in std_logic;
 			areset_n: in std_logic;
+			avail:	in std_logic;
 			D_in:	in std_logic_vector(DATA_WIDTH-1 downto 0) ;
 			Q_out:	out std_logic_vector(DATA_WIDTH-1 downto 0)
 		) ;
@@ -86,6 +89,7 @@ architecture SW_PE_arch of SW_PE is
 		port (
 			clock: in std_logic;
 			areset_n: in std_logic;
+			avail:	in std_logic;
 
 			A_in:	in std_logic_vector(DATA_WIDTH-1 downto 0) ;
 			B_in:	in std_logic_vector(DATA_WIDTH-1 downto 0) ;
@@ -117,6 +121,7 @@ architecture SW_PE_arch of SW_PE is
 	signal sig_beta:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 -- Sequence flow
 	signal sig_DFF_S_out:	std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+	signal sig_DFF_init_out:	std_logic;
 	signal sig_DFF_T_out:	std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 	signal sig_clock_S_out:	std_logic ;
 -- V_diag_sigma
@@ -151,28 +156,47 @@ begin
 		DATA_WIDTH => SEQ_DATA_WIDTH
 	)
 	port map (
-			clock	=> sig_clock_S_out,
-			areset_n	=> areset_n_S,
-			D_in	=> S_in,
-			Q_out	=> sig_DFF_S_out
+		clock	=> sig_clock_S_out,
+		areset_n	=> areset_n_S,
+		avail	=> init_in,
+		D_in	=> S_in,
+		Q_out	=> sig_DFF_S_out
 	);
 
 	sig_clock_S_out <= clock AND move_in_S;
 
 	S_out <= sig_DFF_S_out;
 
+	
+	DFF_init_out:	DFF
+	generic map (
+		DATA_WIDTH => 1
+	)
+	port map (
+		clock	=> clock,
+		areset_n	=> areset_n,
+		avail	=> init_in,
+		D_in	=> init_in,
+		Q_out	=> sig_DFF_init_out
+	);
+
+	init_out <= sig_DFF_init_out;
+
+
 	DFF_T_out:	DFF
 	generic map (
 		DATA_WIDTH => SEQ_DATA_WIDTH
 	)
 	port map (
-			clock	=> clock,
-			areset_n	=> areset_n,
-			D_in	=> T_in,
-			Q_out	=> sig_DFF_T_out
+		clock	=> clock,
+		areset_n	=> areset_n,
+		avail	=> init_in,
+		D_in	=> T_in,
+		Q_out	=> sig_DFF_T_out
 	);
 
 	T_out <= sig_DFF_T_out;
+
 
 
 -- V diagonal +- sigma
@@ -181,10 +205,11 @@ begin
 		DATA_WIDTH => VAL_DATA_WIDTH
 	)
 	port map (
-			clock	=> clock,
-			areset_n	=> areset_n,
-			D_in	=> V_in,
-			Q_out	=> sig_DFF_V_diag
+		clock	=> clock,
+		areset_n	=> areset_n,
+		avail	=> init_in,
+		D_in	=> V_in,
+		Q_out	=> sig_DFF_V_diag
 	);
 
 	LUT: SW_PE_LUT
@@ -193,13 +218,13 @@ begin
 		VAL_DATA_WIDTH	=> VAL_DATA_WIDTH
 	)
 	port map (
-			clock	=> clock_d1,
-			areset_n	=> areset_n,
+		clock	=> clock_d1,
+		areset_n	=> areset_n,
 
-			S_in	=> sig_DFF_S_out,
-			T_in	=> T_in,
-			
-			Sigma_out	=> sig_sigma
+		S_in	=> sig_DFF_S_out,
+		T_in	=> T_in,
+		
+		Sigma_out	=> sig_sigma
 	);
 
 	V_diag_sigma: signed_add
@@ -207,10 +232,10 @@ begin
 		DATA_WIDTH	=> VAL_DATA_WIDTH
 	)
 	port map (
-			A_in	=> sig_DFF_V_diag,
-			B_in	=> sig_sigma,
-			
-			Add_out	=> sig_V_diag_sigma
+		A_in	=> sig_DFF_V_diag,
+		B_in	=> sig_sigma,
+		
+		Add_out	=> sig_V_diag_sigma
 	);
 
 	DFF_V_diag_sigma:	DFF
@@ -218,10 +243,11 @@ begin
 		DATA_WIDTH => VAL_DATA_WIDTH
 	)
 	port map (
-			clock	=> clock_d3,
-			areset_n	=> sig_reset_dff_v_diag_sigma,
-			D_in	=> sig_V_diag_sigma,
-			Q_out	=> sig_DFF_V_diag_sigma
+		clock	=> clock_d3,
+		areset_n	=> sig_reset_dff_v_diag_sigma,
+		avail	=> init_in,
+		D_in	=> sig_V_diag_sigma,
+		Q_out	=> sig_DFF_V_diag_sigma
 	);
 
 	sig_reset_dff_v_diag_sigma <= areset_n AND (NOT sig_V_diag_sigma(VAL_DATA_WIDTH-1));
@@ -232,10 +258,10 @@ begin
 		DATA_WIDTH	=> VAL_DATA_WIDTH
 	)
 	port map (
-			A_in	=> sig_DFF_V_diag,
-			B_in	=> sig_beta,
-			
-			Sub_out	=> sig_E_in_beta
+		A_in	=> sig_DFF_V_diag,
+		B_in	=> sig_beta,
+		
+		Sub_out	=> sig_E_in_beta
 	);
 
 	self_V_in_alpha: signed_sub
@@ -243,10 +269,10 @@ begin
 		DATA_WIDTH	=> VAL_DATA_WIDTH
 	)
 	port map (
-			A_in	=> sig_DFF_V_out,
-			B_in	=> sig_alpha,
-			
-			Sub_out	=> sig_self_V_in_alpha
+		A_in	=> sig_DFF_V_out,
+		B_in	=> sig_alpha,
+		
+		Sub_out	=> sig_self_V_in_alpha
 	);
 
 	V_out_alpha <= sig_self_V_in_alpha;
@@ -256,11 +282,12 @@ begin
 		DATA_WIDTH => VAL_DATA_WIDTH
 	)
 	port map (
-			clock	=> clock_d2,
-			areset_n	=> areset_n,
-			A_in	=> sig_E_in_beta,
-			B_in	=> sig_self_V_in_alpha,
-			Max_out	=> sig_DFF_E_out
+		clock	=> clock_d2,
+		areset_n	=> areset_n,
+		avail	=> init_in,
+		A_in	=> sig_E_in_beta,
+		B_in	=> sig_self_V_in_alpha,
+		Max_out	=> sig_DFF_E_out
 	);
 
 
@@ -270,10 +297,10 @@ begin
 		DATA_WIDTH	=> VAL_DATA_WIDTH
 	)
 	port map (
-			A_in	=> F_in,
-			B_in	=> sig_beta,
-			
-			Sub_out	=> sig_F_in_beta
+		A_in	=> F_in,
+		B_in	=> sig_beta,
+		
+		Sub_out	=> sig_F_in_beta
 	);
 
 	signed_max_DFF_F_out:	signed_max_DFF
@@ -281,11 +308,12 @@ begin
 		DATA_WIDTH => VAL_DATA_WIDTH
 	)
 	port map (
-			clock	=> clock_d2,
-			areset_n	=> areset_n,
-			A_in	=> sig_F_in_beta,
-			B_in	=> V_in_alpha,
-			Max_out	=> sig_DFF_F_out
+		clock	=> clock_d2,
+		areset_n	=> areset_n,
+		avail	=> init_in,
+		A_in	=> sig_F_in_beta,
+		B_in	=> V_in_alpha,
+		Max_out	=> sig_DFF_F_out
 	);
 
 	F_out <= sig_DFF_F_out;
@@ -297,11 +325,12 @@ begin
 		DATA_WIDTH => VAL_DATA_WIDTH
 	)
 	port map (
-			clock	=> clock_d3,
-			areset_n	=> areset_n,
-			A_in	=> sig_DFF_E_out,
-			B_in	=> sig_DFF_F_out,
-			Max_out	=> sig_DFF_max_E_F
+		clock	=> clock_d3,
+		areset_n	=> areset_n,
+		avail	=> init_in,
+		A_in	=> sig_DFF_E_out,
+		B_in	=> sig_DFF_F_out,
+		Max_out	=> sig_DFF_max_E_F
 	);
 
 	signed_max_DFF_V_out:	signed_max_DFF
@@ -309,11 +338,12 @@ begin
 		DATA_WIDTH => VAL_DATA_WIDTH
 	)
 	port map (
-			clock	=> clock,
-			areset_n	=> areset_n,
-			A_in	=> sig_DFF_max_E_F,
-			B_in	=> sig_DFF_V_diag_sigma,
-			Max_out	=> sig_DFF_V_out
+		clock	=> clock,
+		areset_n	=> areset_n,
+		avail	=> init_in,
+		A_in	=> sig_DFF_max_E_F,
+		B_in	=> sig_DFF_V_diag_sigma,
+		Max_out	=> sig_DFF_V_out
 	);
 
 	V_out <= sig_DFF_V_out;
@@ -325,11 +355,12 @@ begin
 		DATA_WIDTH => VAL_DATA_WIDTH
 	)
 	port map (
-			clock	=> clock,
-			areset_n	=> areset_n,
-			A_in	=> max_in,
-			B_in	=> sig_DFF_V_out,
-			Max_out	=> sig_DFF_Max_out
+		clock	=> clock,
+		areset_n	=> areset_n,
+		avail	=> init_in,
+		A_in	=> max_in,
+		B_in	=> sig_DFF_V_out,
+		Max_out	=> sig_DFF_Max_out
 	);
 
 	Max_out <= sig_DFF_Max_out;

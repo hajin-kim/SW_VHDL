@@ -22,6 +22,7 @@ entity SW_main is
 		areset_n_S:	in std_logic;
 		move_in_S:	in std_logic;
 		S_in:	in std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+		init_in:	in std_logic;
 		T_in:	in std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 		
 		Max_in:	in std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
@@ -30,6 +31,7 @@ entity SW_main is
 		V_in_alpha:	in std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 
 		S_out:	out std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+		init_out:	out std_logic;
 		T_out:	out std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 		
 		Max_out:	out std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
@@ -63,6 +65,7 @@ architecture SW_main_arch of SW_main is
 			areset_n_S:	in std_logic;
 			move_in_S:	in std_logic;
 			S_in:	in std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+			init_in:	in std_logic;
 			T_in:	in std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 			
 			Max_in:	in std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
@@ -71,6 +74,7 @@ architecture SW_main_arch of SW_main is
 			V_in_alpha:	in std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 
 			S_out:	out std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+			init_out:	out std_logic;
 			T_out:	out std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 			
 			Max_out:	out std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
@@ -124,6 +128,7 @@ begin
 		areset_n_S	=> areset_n_S,
 		move_in_S	=> move_in_S,
 		S_in	=> S_in,
+		init_in	=> init_in;
 		T_in	=> T_in,
 
 		Max_in	=> Max_in,
@@ -132,6 +137,7 @@ begin
 		V_in_alpha	=> V_in_alpha,
 
 		S_out	=> S_out,
+		init_out	=> init_out,
 		T_out	=> T_out,
 
 		Max_out	=> sig_Max_array,
