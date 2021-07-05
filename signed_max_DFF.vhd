@@ -4,7 +4,7 @@ library ieee ;
 
 	use ieee.std_logic_signed.all ;
 
-entity signed_max is
+entity signed_max_DFF is
 	generic (
 		DATA_WIDTH:	integer := 20
 	) ;
@@ -17,9 +17,9 @@ entity signed_max is
 		
 		Max_out:	out std_logic_vector(DATA_WIDTH-1 downto 0)
 	) ;
-end entity ; -- signed_max
+end entity ; -- signed_max_DFF
 
-architecture signed_max_arch of signed_max is
+architecture signed_max_DFF_arch of signed_max_DFF is
 
 	--max: std_logic_vector(MEM_CELL_DATA_WIDTH-1 downto 0) ;
 
@@ -32,8 +32,8 @@ begin
 	max_DFF_proc : process( clock )
 	begin
 		if( rising_edge(clock) ) then
-			if ( areset_n == '0' ) then
-				Max_out <= std_logic_vector(to_unsigned(0, DATA_WIDTH));
+			if ( areset_n = '0' ) then
+				Max_out <= std_logic_vector(to_signed(0, DATA_WIDTH));
 			else
 				if ( A_in > B_in ) then
 					max_out <= A_in;
@@ -55,4 +55,4 @@ begin
 
 	--max_out <= max;
 
-end architecture ; -- signed_max_arch
+end architecture ; -- signed_max_DFF_arch
