@@ -121,7 +121,7 @@ architecture SW_PE_arch of SW_PE is
 	signal sig_beta:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 -- Sequence flow
 	signal sig_DFF_S_out:	std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
-	signal sig_DFF_init_out:	std_logic;
+	signal sig_DFF_init_out:	std_logic_vector(0 downto 0) ;;
 	signal sig_init_in:	std_logic_vector(0 downto 0) ;
 	signal sig_DFF_T_out:	std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 	signal sig_clock_S_out:	std_logic ;
@@ -182,7 +182,7 @@ begin
 	);
 
 	sig_init_in(0)	<= init_in;
-	init_out <= sig_DFF_init_out;
+	init_out <= sig_DFF_init_out(0);
 
 
 	DFF_T_out:	DFF
