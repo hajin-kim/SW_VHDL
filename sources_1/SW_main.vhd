@@ -128,7 +128,7 @@ begin
 		areset_n_S	=> areset_n_S,
 		move_in_S	=> move_in_S,
 		S_in	=> S_in,
-		init_in	=> init_in;
+		init_in	=> init_in,
 		T_in	=> T_in,
 
 		Max_in	=> Max_in,
