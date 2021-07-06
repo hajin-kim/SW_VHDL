@@ -124,7 +124,7 @@ architecture SW_PE_arch of SW_PE is
 	signal sig_DFF_init_out:	std_logic_vector(0 downto 0) ;
 	signal sig_init_in:	std_logic_vector(0 downto 0) ;
 	signal sig_DFF_T_out:	std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
-	signal sig_clock_S_out:	std_logic ;
+	--signal sig_clock_S_out:	std_logic ;
 -- V_diag_sigma
     signal sig_sigma:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 	signal sig_DFF_V_diag:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
@@ -157,14 +157,12 @@ begin
 		DATA_WIDTH => SEQ_DATA_WIDTH
 	)
 	port map (
-		clock	=> sig_clock_S_out,
+		clock	=> clock,
 		areset_n	=> areset_n_S,
-		avail	=> '1',
+		avail	=> move_in_S,
 		D_in	=> S_in,
 		Q_out	=> sig_DFF_S_out
 	);
-
-	sig_clock_S_out <= clock AND move_in_S;
 
 	S_out <= sig_DFF_S_out;
 
