@@ -140,7 +140,7 @@ begin
 
 	end generate gen_SW_PE; -- gen_SW_PE
 
-	sig_S(NUM_PE)	<= S_in;
+	sig_S(0)	<= S_in;
 	sig_init_in(0)	<= init_in;
 	sig_T(0)	<= T_in;
 	sig_Max(0)	<= Max_in;
@@ -148,7 +148,7 @@ begin
 	sig_V(0)	<= V_in;
 	sig_V_alpha(0)	<= V_in_alpha;
 
-	S_out	<= sig_S(0);
+	S_out	<= sig_S(NUM_PE);
 	init_out	<= sig_init_in(NUM_PE);
 	T_out	<= sig_T(NUM_PE);
 	Max_out	<= sig_Max(NUM_PE);
