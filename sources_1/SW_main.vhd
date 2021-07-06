@@ -93,6 +93,7 @@ architecture SW_main_arch of SW_main is
 		port (
 			clock: in std_logic;
 			areset_n: in std_logic;
+			avail: in std_logic;
 
 			A_in:	in std_logic_vector(DATA_WIDTH-1 downto 0) ;
 			B_in:	in std_logic_vector(DATA_WIDTH-1 downto 0) ;
@@ -152,11 +153,12 @@ begin
 		DATA_WIDTH => VAL_DATA_WIDTH
 	)
 	port map (
-			clock	=> clock,
-			areset_n	=> areset_n,
-			A_in	=> sig_Max_array,
-			B_in	=> sig_Max_result,
-			Max_out	=> sig_Max_result
+		clock	=> clock,
+		areset_n	=> areset_n,
+		avail	=> init_in,
+		A_in	=> sig_Max_array,
+		B_in	=> sig_Max_result,
+		Max_out	=> sig_Max_result
 	);
 
 	Max_out <= sig_Max_result;
