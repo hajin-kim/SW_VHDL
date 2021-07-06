@@ -159,7 +159,7 @@ begin
 	port map (
 		clock	=> sig_clock_S_out,
 		areset_n	=> areset_n_S,
-		avail	=> init_in,
+		avail	=> '1',
 		D_in	=> S_in,
 		Q_out	=> sig_DFF_S_out
 	);
@@ -176,7 +176,7 @@ begin
 	port map (
 		clock	=> clock,
 		areset_n	=> areset_n,
-		avail	=> init_in,
+		avail	=> '1',
 		D_in	=> sig_init_in,
 		Q_out	=> sig_DFF_init_out
 	);
