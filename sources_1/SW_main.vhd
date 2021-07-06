@@ -155,7 +155,7 @@ begin
 	port map (
 		clock	=> clock,
 		areset_n	=> areset_n,
-		avail	=> init_in,
+		avail	=> '1',
 		A_in	=> sig_Max_array,
 		B_in	=> sig_Max_result,
 		Max_out	=> sig_Max_result
