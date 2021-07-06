@@ -255,7 +255,7 @@ begin
 	sig_reset_dff_v_diag_sigma <= areset_n AND (NOT sig_V_diag_sigma(VAL_DATA_WIDTH-1));
 
 -- E_out
-	E_in_beta: signed_sub
+	E_in_beta: signed_add
 	generic map (
 		DATA_WIDTH	=> VAL_DATA_WIDTH
 	)
@@ -263,10 +263,10 @@ begin
 		A_in	=> sig_DFF_V_diag,
 		B_in	=> sig_beta,
 		
-		Sub_out	=> sig_E_in_beta
+		Add_out	=> sig_E_in_beta
 	);
 
-	self_V_in_alpha: signed_sub
+	self_V_in_alpha: signed_add
 	generic map (
 		DATA_WIDTH	=> VAL_DATA_WIDTH
 	)
@@ -274,7 +274,7 @@ begin
 		A_in	=> sig_DFF_V_out,
 		B_in	=> sig_alpha,
 		
-		Sub_out	=> sig_self_V_in_alpha
+		Add_out	=> sig_self_V_in_alpha
 	);
 
 	V_out_alpha <= sig_self_V_in_alpha;
@@ -294,7 +294,7 @@ begin
 
 
 -- F_out
-	F_in_beta: signed_sub
+	F_in_beta: signed_add
 	generic map (
 		DATA_WIDTH	=> VAL_DATA_WIDTH
 	)
@@ -302,7 +302,7 @@ begin
 		A_in	=> F_in,
 		B_in	=> sig_beta,
 		
-		Sub_out	=> sig_F_in_beta
+		Add_out	=> sig_F_in_beta
 	);
 
 	signed_max_DFF_F_out:	signed_max_DFF
