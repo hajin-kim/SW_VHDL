@@ -119,7 +119,7 @@ begin
 
 			areset_n_S	=> areset_n_S,
 			move_in_S	=> move_in_S,
-			S_in	=> sig_S(NUM_PE-i),
+			S_in	=> sig_S(NUM_PE-i-1),
 			init_in	=> sig_init_in(i),
 			T_in	=> sig_T(i),
 
@@ -128,7 +128,7 @@ begin
 			V_in	=> sig_V(i),
 			V_in_alpha	=> sig_V_alpha(i),
 
-			S_out	=> sig_S(NUM_PE-i-1),
+			S_out	=> sig_S(NUM_PE-i),
 			init_out	=> sig_init_in(i+1),
 			T_out	=> sig_T(i+1),
 
