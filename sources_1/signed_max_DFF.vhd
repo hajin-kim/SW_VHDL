@@ -37,9 +37,9 @@ begin
 				Max_out <= std_logic_vector(to_signed(0, DATA_WIDTH));
 			elsif ( avail = '1' ) then
 				if ( A_in > B_in ) then
-					max_out <= A_in;
+					Max_out <= A_in;
 				else
-					max_out <= B_in;
+					Max_out <= B_in;
 				end if ;
 			end if ;
 		end if ;

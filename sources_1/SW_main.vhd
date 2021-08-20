@@ -37,12 +37,16 @@ entity SW_main is
 		Max_out:	out std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 		F_out:	out std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 		V_out:	out std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
-		V_out_alpha:	out std_logic_vector(VAL_DATA_WIDTH-1 downto 0)
+		V_out_alpha:	out std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
+
+		ctrl_use_PE_T_in:	in std_logic
 
 	) ;
 end entity ; -- SW_main
 
 architecture SW_main_arch of SW_main is
+
+	constant MEM_DATA_WIDTH: integer := SEQ_DATA_WIDTH + VAL_DATA_WIDTH * 2 + 1;
 
 
 	component SW_PE_array is
@@ -103,11 +107,111 @@ architecture SW_main_arch of SW_main is
 	end component ; -- signed_max_DFF
 
 
+	component SW_mid_comb is
+		generic (
+			SEQ_DATA_WIDTH: integer := 2;
+			VAL_DATA_WIDTH:	integer := 20;
+
+			MEM_DATA_WIDTH:	integer := 43
+		) ;
+		port (
+			clock:	in std_logic ;
+			areset_n: in std_logic ;
+
+			ctrl_use_PE_T_in:	in std_logic ;
+
+			init_in:	in std_logic ;
+			T_in:	in std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+			V_in:	in std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
+			F_in:	in std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
+
+			initial_init_in:	in std_logic ;
+			initial_T_in:	in std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+
+			data_out:	out std_logic_vector(SEQ_DATA_WIDTH + VAL_DATA_WIDTH * 2 downto 0)
+		) ;
+	end component ; -- SW_mid_comb
+
+
+	component SW_pseudo_FIFO is
+		generic (
+			SEQ_DATA_WIDTH: integer := 2;
+			VAL_DATA_WIDTH:	integer := 20;
+
+			MEM_DATA_WIDTH:	integer := 43;
+			MEM_ADDR_WIDTH: integer := 4
+		) ;
+		port (
+			clock:	in std_logic ;
+			areset_n: in std_logic ;
+
+			w_data_in:	in std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
+
+			r_data_out:	out std_logic_vector(MEM_DATA_WIDTH-1 downto 0)
+		) ;
+	end component ; -- SW_pseudo_FIFO
+
+
+	component SW_mid_gen is
+		generic (
+			SEQ_DATA_WIDTH: integer := 2;
+			VAL_DATA_WIDTH:	integer := 20;
+
+			MEM_DATA_WIDTH:	integer := 43;
+
+			ALPHA:	integer := -5
+		) ;
+		port (
+			clock:	in std_logic ;
+			areset_n: in std_logic ;
+
+			data_in:	in std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
+
+			init_out:	out std_logic ;
+			T_out:	out std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+			V_out:	out std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
+			V_out_alpha:	out std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
+			F_out:	out std_logic_vector(VAL_DATA_WIDTH-1 downto 0)
+		) ;
+	end component ; -- SW_mid_gen
+
+
+	component counter is
+		generic (
+			DATA_LENGTH:	integer := 16
+		) ;
+		port (
+			clock:	in std_logic;
+			areset_n:	in std_logic;
+			avail:	in std_logic;
+			Q_out:	out std_logic_vector(DATA_LENGTH-1 downto 0)
+		) ;
+	end component ; -- counter
+
+
 	signal sig_Max_array:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0);
 	signal sig_Max_result:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0);
 
+	signal sig_PE_init_out:	std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+	signal sig_PE_T_out:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
+	signal sig_PE_F_out:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
+	signal sig_PE_V_out:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
+
+	signal sig_PE_init_in:	std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
+	signal sig_PE_T_in:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
+	signal sig_PE_F_in:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
+	signal sig_PE_V_in:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
+	signal sig_PE_V_in_alpha:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
+
+	signal sig_FIFO_w_data_in:	std_logic_vector(SEQ_DATA_WIDTH + VAL_DATA_WIDTH * 2 downto 0) ;
+	signal sig_FIFO_r_data_out:	std_logic_vector(SEQ_DATA_WIDTH + VAL_DATA_WIDTH * 2 downto 0) ;
 
 begin
+
+	init_out	<= sig_PE_init_out
+	T_out	<= sig_PE_T_out
+	F_out	<= sig_PE_F_out
+	V_out	<= sig_PE_V_out
 
 	PE_array:	SW_PE_array
 	generic map (
@@ -138,12 +242,12 @@ begin
 		V_in_alpha	=> V_in_alpha,
 
 		S_out	=> S_out,
-		init_out	=> init_out,
-		T_out	=> T_out,
+		init_out	=> sig_PE_init_out,
+		T_out	=> sig_PE_T_out,
 
 		Max_out	=> sig_Max_array,
-		F_out	=> F_out,
-		V_out	=> V_out,
+		F_out	=> sig_PE_F_out,
+		V_out	=> sig_PE_V_out,
 		V_out_alpha	=> V_out_alpha
 	);
 
@@ -162,5 +266,70 @@ begin
 	);
 
 	Max_out <= sig_Max_result;
+
+
+	mid_comb:	SW_mid_comb
+	generic map (
+		SEQ_DATA_WIDTH	=> SEQ_DATA_WIDTH,
+		VAL_DATA_WIDTH	=> VAL_DATA_WIDTH,
+
+		MEM_DATA_WIDTH	=> MEM_DATA_WIDTH
+	)
+	port map (
+		clock	=> clock,
+		areset_n	=> areset_n,
+
+		ctrl_use_PE_T_in:	ctrl_use_PE_T_in ;	--TODO
+
+		init_in	=> sig_PE_init_out,
+		T_in	=> sig_PE_T_out,
+		V_in	=> sig_PE_V_out,
+		F_in	=> sig_PE_F_out,
+
+		initial_init_in	=> init_in ;
+		initial_T_in	=> T_in ;
+
+		data_out	=> sig_FIFO_w_data_in
+	) ;
+
+	pseudo_FIFO:	SW_pseudo_FIFO
+	generic map (
+		SEQ_DATA_WIDTH	=> SEQ_DATA_WIDTH,
+		VAL_DATA_WIDTH	=> VAL_DATA_WIDTH,
+
+		MEM_DATA_WIDTH	=> MEM_DATA_WIDTH,
+		MEM_ADDR_WIDTH	=> 4	--TODO
+	)
+	port map (
+		clock	=> clock,
+		areset_n	=> areset_n,
+
+		w_data_in	=> sig_FIFO_w_data_in,
+
+		r_data_out	=> sig_FIFO_r_data_out
+	) ;
+
+
+	mid_gen:	SW_mid_gen
+	generic map (
+		SEQ_DATA_WIDTH	=> SEQ_DATA_WIDTH,
+		VAL_DATA_WIDTH	=> VAL_DATA_WIDTH,
+
+		MEM_DATA_WIDTH	=> MEM_DATA_WIDTH,
+
+		ALPHA	=> ALPHA
+	)
+	port map (
+		clock	=> clock,
+		areset_n	=> areset_n,
+
+		data_in	=> sig_FIFO_r_data_out,
+
+		init_out	=> sig_PE_init_in,
+		T_out	=> sig_PE_T_in,
+		V_out	=> sig_PE_V_in,
+		V_out_alpha	=> sig_PE_V_in_alpha,
+		F_out	=> sig_PE_F_in
+	) ;
 
 end architecture ; -- SW_main_arch

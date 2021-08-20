@@ -191,8 +191,9 @@ begin
 
 	-- Initial process
 
---		T:	00	01	10	11
---	S:		A	C	G	T
+-- Score array
+--		S:	00	01	10	11
+--	T:		A	C	G	T
 --	00	A	2	-7	-5	-7
 --	01	C	-7	2	-7	-5
 --	10	G	-5	-7	2	-7
