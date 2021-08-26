@@ -10,7 +10,7 @@ entity counter is
 	port (
 		clock:	in std_logic;
 		areset_n:	in std_logic;
-		avail:	in std_logic;
+		enable:	in std_logic;
 		Q_out:	out std_logic_vector(DATA_LENGTH-1 downto 0)
 	) ;
 end entity ; -- counter
@@ -26,7 +26,7 @@ begin
 		if( rising_edge(clock) ) then
 			if ( areset_n = '0' ) then
 				Q_out <= std_logic_vector(to_unsigned(0, DATA_LENGTH));
-			elsif ( avail = '1' ) then
+			elsif ( enable = '1' ) then
 				Q_out <= Q_out + std_logic_vector(to_unsigned(1, DATA_LENGTH));
 			end if ;
 		end if ;
