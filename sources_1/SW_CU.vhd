@@ -43,7 +43,7 @@ entity SW_CU is
 		T_counter_enable:	out std_logic;
 
 		-- mid comb
-		ctrl_use_PE_T_in:	in std_logic
+		ctrl_use_PE_T_in:	out std_logic
 
 
 	) ;
@@ -59,12 +59,14 @@ architecture SW_CU_arch of SW_CU is
 		FEED_T,
 		WAIT_T_OUT,
 		RECEIVE_MID
-	)
+	);
 	signal sw_cu_state : state;
 
 	-- Counter result
 	signal S_counter_done: std_logic;
+	signal sig_S_counter_reset_n: std_logic;
 	signal T_counter_done: std_logic;
+	signal sig_T_counter_reset_n: std_logic;
 
 begin
 
@@ -140,12 +142,12 @@ begin
 	begin
 		if( rising_edge(clock) ) then
 			if ( areset_n = '0' ) then
-				S_counter_reset_n <= '0';
+				sig_S_counter_reset_n <= '0';
 			else
 				if ( sw_cu_state = IDLE ) then
-					S_counter_reset_n <= '0';
-				else then
-					S_counter_reset_n <= '1';
+					sig_S_counter_reset_n <= '0';
+				else
+					sig_S_counter_reset_n <= '1';
 				end if ;
 			end if ;
 		end if ;
@@ -160,7 +162,7 @@ begin
 			else
 				if ( sw_cu_state = FEED_S ) then
 					S_counter_enable <= '1';
-				else then
+				else
 					S_counter_enable <= '0';
 				end if ;
 			end if ;
@@ -174,7 +176,7 @@ begin
 			if ( areset_n = '0' ) then
 				S_counter_done <= '0';
 			else
-				if ( S_counter_reset_n = '0' ) then
+				if ( sig_S_counter_reset_n = '0' ) then
 					S_counter_done <= '0';
 				elsif ( S_counter_data = S_size) then
 					S_counter_done <= '1';	--TODO
@@ -189,12 +191,12 @@ begin
 	begin
 		if( rising_edge(clock) ) then
 			if ( areset_n = '0' ) then
-				T_counter_reset_n <= '0';
+				sig_T_counter_reset_n <= '0';
 			else
-				if ( sw_cu_state = FEED_T )
-					T_counter_reset_n <= '1';
+				if ( sw_cu_state = FEED_T ) then
+					sig_T_counter_reset_n <= '1';
 				else
-					T_counter_reset_n <= '0';
+					sig_T_counter_reset_n <= '0';
 				end if ;
 			end if ;
 		end if ;
@@ -208,7 +210,7 @@ begin
 			if ( areset_n = '0' ) then
 				T_counter_done <= '0';
 			else
-				if ( T_counter_reset_n = '0' ) then
+				if ( sig_T_counter_reset_n = '0' ) then
 					T_counter_done <= '0';
 				elsif ( T_counter_data = T_size) then
 					T_counter_done <= '1';

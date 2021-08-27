@@ -54,37 +54,37 @@ architecture mem_4_arch of mem_4 is
 	--for mem_cell_15_inst: mem_cell	use entity WORK.mem_cell(mem_cell_async);
 
 	signal w_en_0: std_logic;
-	signal Qout_0: std_logic_vector(MEM_DATA_WIDTH downto 0) ;
+	signal Qout_0: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 	signal w_en_1: std_logic;
-	signal Qout_1: std_logic_vector(MEM_DATA_WIDTH downto 0) ;
+	signal Qout_1: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 	signal w_en_2: std_logic;
-	signal Qout_2: std_logic_vector(MEM_DATA_WIDTH downto 0) ;
+	signal Qout_2: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 	signal w_en_3: std_logic;
-	signal Qout_3: std_logic_vector(MEM_DATA_WIDTH downto 0) ;
+	signal Qout_3: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 	signal w_en_4: std_logic;
-	signal Qout_4: std_logic_vector(MEM_DATA_WIDTH downto 0) ;
+	signal Qout_4: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 	signal w_en_5: std_logic;
-	signal Qout_5: std_logic_vector(MEM_DATA_WIDTH downto 0) ;
+	signal Qout_5: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 	signal w_en_6: std_logic;
-	signal Qout_6: std_logic_vector(MEM_DATA_WIDTH downto 0) ;
+	signal Qout_6: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 	signal w_en_7: std_logic;
-	signal Qout_7: std_logic_vector(MEM_DATA_WIDTH downto 0) ;
+	signal Qout_7: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 	signal w_en_8: std_logic;
-	signal Qout_8: std_logic_vector(MEM_DATA_WIDTH downto 0) ;
+	signal Qout_8: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 	signal w_en_9: std_logic;
-	signal Qout_9: std_logic_vector(MEM_DATA_WIDTH downto 0) ;
+	signal Qout_9: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 	signal w_en_10: std_logic;
-	signal Qout_10: std_logic_vector(MEM_DATA_WIDTH downto 0) ;
+	signal Qout_10: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 	signal w_en_11: std_logic;
-	signal Qout_11: std_logic_vector(MEM_DATA_WIDTH downto 0) ;
+	signal Qout_11: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 	signal w_en_12: std_logic;
-	signal Qout_12: std_logic_vector(MEM_DATA_WIDTH downto 0) ;
+	signal Qout_12: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 	signal w_en_13: std_logic;
-	signal Qout_13: std_logic_vector(MEM_DATA_WIDTH downto 0) ;
+	signal Qout_13: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 	signal w_en_14: std_logic;
-	signal Qout_14: std_logic_vector(MEM_DATA_WIDTH downto 0) ;
+	signal Qout_14: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 	signal w_en_15: std_logic;
-	signal Qout_15: std_logic_vector(MEM_DATA_WIDTH downto 0) ;
+	signal Qout_15: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 
 begin
 

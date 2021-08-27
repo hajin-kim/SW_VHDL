@@ -96,7 +96,7 @@ architecture SW_main_arch of SW_main is
 			T_counter_enable:	out std_logic;
 
 			-- mid comb
-			ctrl_use_PE_T_in:	in std_logic
+			ctrl_use_PE_T_in:	out std_logic
 
 
 		) ;
@@ -246,13 +246,13 @@ architecture SW_main_arch of SW_main is
 	signal sig_Max_array:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0);
 	signal sig_Max_result:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0);
 
-	signal sig_PE_init_out:	std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
-	signal sig_PE_T_out:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
+	signal sig_PE_init_out:	std_logic ;
+	signal sig_PE_T_out:	std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 	signal sig_PE_F_out:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 	signal sig_PE_V_out:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 
-	signal sig_PE_init_in:	std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
-	signal sig_PE_T_in:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
+	signal sig_PE_init_in:	std_logic ;
+	signal sig_PE_T_in:	std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 	signal sig_PE_F_in:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 	signal sig_PE_V_in:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 	signal sig_PE_V_in_alpha:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
@@ -260,22 +260,22 @@ architecture SW_main_arch of SW_main is
 	signal sig_FIFO_w_data_in:	std_logic_vector(SEQ_DATA_WIDTH + VAL_DATA_WIDTH * 2 downto 0) ;
 	signal sig_FIFO_r_data_out:	std_logic_vector(SEQ_DATA_WIDTH + VAL_DATA_WIDTH * 2 downto 0) ;
 
-	signal S_counter_reset_n:	std_logic ;
-	signal S_counter_enable:	std_logic ;
-	signal S_counter_data:	std_logic_vector(15 downto 0) ; --TODO
-	signal T_counter_reset_n:	std_logic ;
-	signal T_counter_enable:	std_logic ;
-	signal T_counter_data:	std_logic_vector(15 downto 0) ; --TODO
+	signal sig_S_counter_reset_n:	std_logic ;
+	signal sig_S_counter_enable:	std_logic ;
+	signal sig_S_counter_data:	std_logic_vector(15 downto 0) ; --TODO
+	signal sig_T_counter_reset_n:	std_logic ;
+	signal sig_T_counter_enable:	std_logic ;
+	signal sig_T_counter_data:	std_logic_vector(15 downto 0) ; --TODO
 
 	signal sig_ctrl_move_S:	std_logic;
 	signal sig_ctrl_use_PE_T_in:	std_logic;
 
 begin
 
-	init_out	<= sig_PE_init_out
-	T_out	<= sig_PE_T_out
-	F_out	<= sig_PE_F_out
-	V_out	<= sig_PE_V_out
+	init_out	<= sig_PE_init_out;
+	T_out	<= sig_PE_T_out;
+	F_out	<= sig_PE_F_out;
+	V_out	<= sig_PE_V_out;
 
 
 	CU:	SW_CU
@@ -301,7 +301,7 @@ begin
 		init_all_done	=> init_all_done,
 
 		move_S_in	=> move_in_S,
-		init_in 	=> init_in,	-- TODO: ì´ê±° init_in ì•„ë‹Œê±°ê°™ì€ë° 
+		init_in 	=> init_in,	-- TODO: ?´ê±? init_in ?•„?‹Œê±°ê°™???° 
 
 		ctrl_move_S	=> sig_ctrl_move_S,
 
@@ -449,9 +449,9 @@ begin
 	)
 	port map (
 		clock	=> clock,
-		areset_n	=> S_counter_reset_n,
-		enable 	=> S_counter_enable,
-		Q_out 	=> S_counter_data
+		areset_n	=> sig_S_counter_reset_n,
+		enable 	=> sig_S_counter_enable,
+		Q_out 	=> sig_S_counter_data
 	) ;
 
 
@@ -461,9 +461,9 @@ begin
 	)
 	port map (
 		clock	=> clock,
-		areset_n	=> T_counter_reset_n,
-		enable 	=> T_counter_enable,
-		Q_out 	=> T_counter_data
+		areset_n	=> sig_T_counter_reset_n,
+		enable 	=> sig_T_counter_enable,
+		Q_out 	=> sig_T_counter_data
 	) ;
 
 end architecture ; -- SW_main_arch

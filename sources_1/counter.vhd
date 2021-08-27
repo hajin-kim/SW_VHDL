@@ -17,17 +17,19 @@ end entity ; -- counter
 
 architecture counter_arch of counter is
 
-	--Q:	std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal Q:	std_logic_vector(DATA_LENGTH-1 downto 0);
 
 begin
+
+	Q_out <= Q;
 
 	counter_proc : process( clock )
 	begin
 		if( rising_edge(clock) ) then
 			if ( areset_n = '0' ) then
-				Q_out <= std_logic_vector(to_unsigned(0, DATA_LENGTH));
+				Q <= std_logic_vector(to_unsigned(0, DATA_LENGTH));
 			elsif ( enable = '1' ) then
-				Q_out <= Q_out + std_logic_vector(to_unsigned(1, DATA_LENGTH));
+				Q <= Q + std_logic_vector(to_unsigned(1, DATA_LENGTH));
 			end if ;
 		end if ;
 	end process ; -- counter_proc

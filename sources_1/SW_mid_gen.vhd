@@ -53,7 +53,7 @@ begin
 	)
 	port map (
 		A_in	=> V_in,
-		B_in	=> to_signed(ALPHA, VAL_DATA_WIDTH),
+		B_in	=> std_logic_vector(to_signed(ALPHA, VAL_DATA_WIDTH)),
 		
 		Add_out	=> sig_sub_result
 	);
@@ -64,10 +64,10 @@ begin
 		if( rising_edge(clock) ) then
 			if ( areset_n = '0' ) then
 				init_out <= '0';
-				T_out <= to_unsigned(0, SEQ_DATA_WIDTH);
-				V_out <= to_unsigned(0, VAL_DATA_WIDTH);
-				V_out_alpha	<= to_unsigned(0, VAL_DATA_WIDTH);
-				F_out <= to_unsigned(0, VAL_DATA_WIDTH);
+				T_out <= std_logic_vector(to_unsigned(0, SEQ_DATA_WIDTH));
+				V_out <= std_logic_vector(to_unsigned(0, VAL_DATA_WIDTH));
+				V_out_alpha	<= std_logic_vector(to_unsigned(0, VAL_DATA_WIDTH));
+				F_out <= std_logic_vector(to_unsigned(0, VAL_DATA_WIDTH));
 			else
 				init_out	<= data_in(MEM_DATA_WIDTH-1);
 				T_out	<= data_in(MEM_DATA_WIDTH-2 downto VAL_DATA_WIDTH*2);

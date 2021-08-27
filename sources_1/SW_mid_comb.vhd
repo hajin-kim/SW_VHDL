@@ -33,15 +33,15 @@ architecture SW_mid_comb_arch of SW_mid_comb is
 
 begin
 
-	data	<= init_in & T_in & V_in & F_in	when ( ctrl_use_PE_T_in = '1');
-			else initial_init_in & initial_T_in & to_unsigned(0, VAL_DATA_WIDTH * 2);
+	data	<= init_in & T_in & V_in & F_in	when ( ctrl_use_PE_T_in = '1')
+			else initial_init_in & initial_T_in & std_logic_vector(to_unsigned(0, VAL_DATA_WIDTH * 2));
 
 	-- State logic
 	proc_data : process( clock )
 	begin
 		if( rising_edge(clock) ) then
 			if ( areset_n = '0' ) then
-				data_out <= to_unsigned(0, MEM_DATA_WIDTH);
+				data_out <= std_logic_vector(to_unsigned(0, MEM_DATA_WIDTH));
 			else
 				data_out <= data;
 			end if ;

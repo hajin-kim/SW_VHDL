@@ -9,7 +9,7 @@ entity DFF is
 	port (
 		clock:	in std_logic;
 		areset_n:	in std_logic;
-		avail:	in std_logic;
+		enable:	in std_logic;
 		D_in:	in std_logic_vector(DATA_WIDTH-1 downto 0) ;
 		Q_out:	out std_logic_vector(DATA_WIDTH-1 downto 0)
 	) ;
@@ -26,7 +26,7 @@ begin
 		if( rising_edge(clock) ) then
 			if ( areset_n = '0' ) then
 				Q_out <= std_logic_vector(to_signed(0, DATA_WIDTH));
-			elsif ( avail = '1' ) then
+			elsif ( enable = '1' ) then
 				Q_out <= D_in;
 			end if ;
 		end if ;

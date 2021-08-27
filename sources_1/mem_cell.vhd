@@ -18,7 +18,7 @@ entity mem_cell is
 end entity ; -- mem_cell
 
 architecture mem_cell_async of mem_cell is
-	data: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
+	signal data: std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 begin
 
 	cell : process( areset_n, w_en, w_data )
