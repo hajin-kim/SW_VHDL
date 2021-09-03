@@ -147,10 +147,10 @@ begin
 		clock	=> clock,
 		areset_n	=> areset_n,
 
-		w_en	=> w_en_0,
+		w_en	=> w_en_1,
 		w_data	=> w_data,
 		
-		Qout	=> Qout_0
+		Qout	=> Qout_1
 	);
 
 	mem_cell_2_inst: mem_cell
@@ -161,10 +161,10 @@ begin
 		clock	=> clock,
 		areset_n	=> areset_n,
 
-		w_en	=> w_en_0,
+		w_en	=> w_en_2,
 		w_data	=> w_data,
 		
-		Qout	=> Qout_0
+		Qout	=> Qout_2
 	);
 
 	mem_cell_3_inst: mem_cell
@@ -175,10 +175,10 @@ begin
 		clock	=> clock,
 		areset_n	=> areset_n,
 
-		w_en	=> w_en_0,
+		w_en	=> w_en_3,
 		w_data	=> w_data,
 		
-		Qout	=> Qout_0
+		Qout	=> Qout_3
 	);
 
 	mem_cell_4_inst: mem_cell
@@ -189,10 +189,10 @@ begin
 		clock	=> clock,
 		areset_n	=> areset_n,
 
-		w_en	=> w_en_0,
+		w_en	=> w_en_4,
 		w_data	=> w_data,
 		
-		Qout	=> Qout_0
+		Qout	=> Qout_4
 	);
 
 	mem_cell_5_inst: mem_cell
@@ -203,10 +203,10 @@ begin
 		clock	=> clock,
 		areset_n	=> areset_n,
 
-		w_en	=> w_en_0,
+		w_en	=> w_en_5,
 		w_data	=> w_data,
 		
-		Qout	=> Qout_0
+		Qout	=> Qout_5
 	);
 
 	mem_cell_6_inst: mem_cell
@@ -217,10 +217,10 @@ begin
 		clock	=> clock,
 		areset_n	=> areset_n,
 
-		w_en	=> w_en_0,
+		w_en	=> w_en_6,
 		w_data	=> w_data,
 		
-		Qout	=> Qout_0
+		Qout	=> Qout_6
 	);
 
 	mem_cell_7_inst: mem_cell
@@ -231,10 +231,10 @@ begin
 		clock	=> clock,
 		areset_n	=> areset_n,
 
-		w_en	=> w_en_0,
+		w_en	=> w_en_7,
 		w_data	=> w_data,
 		
-		Qout	=> Qout_0
+		Qout	=> Qout_7
 	);
 
 	mem_cell_8_inst: mem_cell
@@ -245,10 +245,10 @@ begin
 		clock	=> clock,
 		areset_n	=> areset_n,
 
-		w_en	=> w_en_0,
+		w_en	=> w_en_8,
 		w_data	=> w_data,
 		
-		Qout	=> Qout_0
+		Qout	=> Qout_8
 	);
 
 	mem_cell_9_inst: mem_cell
@@ -259,10 +259,10 @@ begin
 		clock	=> clock,
 		areset_n	=> areset_n,
 
-		w_en	=> w_en_0,
+		w_en	=> w_en_9,
 		w_data	=> w_data,
 		
-		Qout	=> Qout_0
+		Qout	=> Qout_9
 	);
 
 	mem_cell_10_inst: mem_cell
@@ -273,10 +273,10 @@ begin
 		clock	=> clock,
 		areset_n	=> areset_n,
 
-		w_en	=> w_en_0,
+		w_en	=> w_en_10,
 		w_data	=> w_data,
 		
-		Qout	=> Qout_0
+		Qout	=> Qout_10
 	);
 
 	mem_cell_11_inst: mem_cell
@@ -287,10 +287,10 @@ begin
 		clock	=> clock,
 		areset_n	=> areset_n,
 
-		w_en	=> w_en_0,
+		w_en	=> w_en_11,
 		w_data	=> w_data,
 		
-		Qout	=> Qout_0
+		Qout	=> Qout_11
 	);
 
 	mem_cell_12_inst: mem_cell
@@ -301,10 +301,10 @@ begin
 		clock	=> clock,
 		areset_n	=> areset_n,
 
-		w_en	=> w_en_0,
+		w_en	=> w_en_12,
 		w_data	=> w_data,
 		
-		Qout	=> Qout_0
+		Qout	=> Qout_12
 	);
 
 	mem_cell_13_inst: mem_cell
@@ -315,10 +315,10 @@ begin
 		clock	=> clock,
 		areset_n	=> areset_n,
 
-		w_en	=> w_en_0,
+		w_en	=> w_en_13,
 		w_data	=> w_data,
 		
-		Qout	=> Qout_0
+		Qout	=> Qout_13
 	);
 
 	mem_cell_14_inst: mem_cell
@@ -329,10 +329,10 @@ begin
 		clock	=> clock,
 		areset_n	=> areset_n,
 
-		w_en	=> w_en_0,
+		w_en	=> w_en_14,
 		w_data	=> w_data,
 		
-		Qout	=> Qout_0
+		Qout	=> Qout_14
 	);
 
 	mem_cell_15_inst: mem_cell
@@ -343,10 +343,10 @@ begin
 		clock	=> clock,
 		areset_n	=> areset_n,
 
-		w_en	=> w_en_0,
+		w_en	=> w_en_15,
 		w_data	=> w_data,
 		
-		Qout	=> Qout_0
+		Qout	=> Qout_15
 	);
 
 end architecture ; -- mem_4_arch
