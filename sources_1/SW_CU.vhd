@@ -31,6 +31,7 @@ entity SW_CU is
 		init_in:	in std_logic;
 
 		ctrl_move_S:	out std_logic;
+		ctrl_send_data: out std_logic;
 
 		-- S counter
 		S_counter_data:	in std_logic_vector(SEQ_DATA_LEN_CHECKER_WIDTH-1 downto 0) ;
@@ -90,7 +91,7 @@ begin
 						end if ;
 					
 					when FEED_S =>
-						if ( move_S_in = '1' ) then
+						if ( move_S_in = '0' ) then
 							sw_cu_state <= FEED_T;
 						end if ;
 
@@ -152,6 +153,8 @@ begin
 			end if ;
 		end if ;
 	end process ; -- proc_S_counter_reset_n
+	
+	S_counter_reset_n <= sig_S_counter_reset_n;
 
 	-- start on FEED_S
 	proc_S_counter_enable : process ( clock )
@@ -192,15 +195,20 @@ begin
 		if( rising_edge(clock) ) then
 			if ( areset_n = '0' ) then
 				sig_T_counter_reset_n <= '0';
+				ctrl_send_data <= '0';
 			else
 				if ( sw_cu_state = FEED_T ) then
 					sig_T_counter_reset_n <= '1';
+					ctrl_send_data <= '1';
 				else
 					sig_T_counter_reset_n <= '0';
+					ctrl_send_data <= '0';
 				end if ;
 			end if ;
 		end if ;
 	end process ; -- proc_S_counter_reset_n
+	
+	T_counter_reset_n <= sig_T_counter_reset_n;
 
 	T_counter_enable <= '1';
 

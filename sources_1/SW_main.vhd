@@ -84,6 +84,7 @@ architecture SW_main_arch of SW_main is
 			init_in:	in std_logic;
 
 			ctrl_move_S:	out std_logic;
+			ctrl_send_data: out std_logic;
 
 			-- S counter
 			S_counter_data:	in std_logic_vector(SEQ_DATA_LEN_CHECKER_WIDTH-1 downto 0) ;
@@ -218,6 +219,8 @@ architecture SW_main_arch of SW_main is
 		port (
 			clock:	in std_logic ;
 			areset_n: in std_logic ;
+		
+			ctrl_send_data: in std_logic ;
 
 			data_in:	in std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 
@@ -269,6 +272,7 @@ architecture SW_main_arch of SW_main is
 
 	signal sig_ctrl_move_S:	std_logic;
 	signal sig_ctrl_use_PE_T_in:	std_logic;
+	signal sig_ctrl_send_data: std_logic;
 
 begin
 
@@ -304,6 +308,7 @@ begin
 		init_in 	=> init_in,	-- TODO: ?´ê±? init_in ?•„?‹Œê±°ê°™???° 
 
 		ctrl_move_S	=> sig_ctrl_move_S,
+		ctrl_send_data => sig_ctrl_send_data,
 
 		-- S counter
 		S_counter_data	=> sig_S_counter_data,
@@ -432,6 +437,8 @@ begin
 	port map (
 		clock	=> clock,
 		areset_n	=> areset_n,
+		
+		ctrl_send_data => sig_ctrl_send_data,
 
 		data_in	=> sig_FIFO_r_data_out,
 

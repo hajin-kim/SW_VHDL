@@ -14,6 +14,8 @@ entity SW_mid_gen is
 	port (
 		clock:	in std_logic ;
 		areset_n: in std_logic ;
+		
+		ctrl_send_data: in std_logic ;
 
 		data_in:	in std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 
@@ -68,12 +70,18 @@ begin
 				V_out <= std_logic_vector(to_unsigned(0, VAL_DATA_WIDTH));
 				V_out_alpha	<= std_logic_vector(to_unsigned(0, VAL_DATA_WIDTH));
 				F_out <= std_logic_vector(to_unsigned(0, VAL_DATA_WIDTH));
-			else
+			elsif ( ctrl_send_data = '1' ) then
 				init_out	<= data_in(MEM_DATA_WIDTH-1);
 				T_out	<= data_in(MEM_DATA_WIDTH-2 downto VAL_DATA_WIDTH*2);
 				V_out	<= V_in;
 				V_out_alpha	<= sig_sub_result;
 				F_out	<= data_in(VAL_DATA_WIDTH-1 downto 0);
+			else
+				init_out <= '0';
+				T_out <= std_logic_vector(to_unsigned(0, SEQ_DATA_WIDTH));
+				V_out <= std_logic_vector(to_unsigned(0, VAL_DATA_WIDTH));
+				V_out_alpha	<= std_logic_vector(to_unsigned(0, VAL_DATA_WIDTH));
+				F_out <= std_logic_vector(to_unsigned(0, VAL_DATA_WIDTH));
 			end if ;
 		end if ;
 	end process ; -- proc_data
