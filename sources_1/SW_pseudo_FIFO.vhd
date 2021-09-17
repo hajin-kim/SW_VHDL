@@ -12,8 +12,11 @@ entity SW_pseudo_FIFO is
 	) ;
 	port (
 		clock:	in std_logic ;
-		areset_n: in std_logic ;
-
+		areset_n:	in std_logic ;
+		
+		ctrl_send_data: in std_logic ;
+		
+		w_en_in:	in std_logic;
 		w_data_in:	in std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 
 		r_data_out:	out std_logic_vector(MEM_DATA_WIDTH-1 downto 0)
@@ -58,7 +61,7 @@ architecture SW_pseudo_FIFO_arch of SW_pseudo_FIFO is
 
 begin
 
-	init_in	<= w_data_in(MEM_DATA_WIDTH-1);
+	init_in	<= w_data_in(MEM_DATA_WIDTH-1) XOR ctrl_send_data;
 
 	FIFO_counter: async_edge_triggered_counter
 	generic map (
@@ -78,7 +81,7 @@ begin
 	port map (
 		clock	=> clock,
 		areset_n	=> areset_n,
-		w_en	=> init_in,
+		w_en	=> w_en_in,
 		w_addr	=> sig_cnt_out,
 		w_data	=> w_data_in,
 		r_data	=> r_data_out

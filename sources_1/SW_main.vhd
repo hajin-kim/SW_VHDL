@@ -183,6 +183,7 @@ architecture SW_main_arch of SW_main is
 			initial_init_in:	in std_logic ;
 			initial_T_in:	in std_logic_vector(SEQ_DATA_WIDTH-1 downto 0) ;
 
+			w_en_out:	out std_logic ;
 			data_out:	out std_logic_vector(SEQ_DATA_WIDTH + VAL_DATA_WIDTH * 2 downto 0)
 		) ;
 	end component ; -- SW_mid_comb
@@ -199,7 +200,10 @@ architecture SW_main_arch of SW_main is
 		port (
 			clock:	in std_logic ;
 			areset_n: in std_logic ;
+		
+			ctrl_send_data: in std_logic ;
 
+			w_en_in:	in std_logic;
 			w_data_in:	in std_logic_vector(MEM_DATA_WIDTH-1 downto 0) ;
 
 			r_data_out:	out std_logic_vector(MEM_DATA_WIDTH-1 downto 0)
@@ -260,6 +264,7 @@ architecture SW_main_arch of SW_main is
 	signal sig_PE_V_in:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 	signal sig_PE_V_in_alpha:	std_logic_vector(VAL_DATA_WIDTH-1 downto 0) ;
 
+	signal sig_FIFO_w_en_in:	std_logic ;
 	signal sig_FIFO_w_data_in:	std_logic_vector(SEQ_DATA_WIDTH + VAL_DATA_WIDTH * 2 downto 0) ;
 	signal sig_FIFO_r_data_out:	std_logic_vector(SEQ_DATA_WIDTH + VAL_DATA_WIDTH * 2 downto 0) ;
 
@@ -305,7 +310,7 @@ begin
 		init_all_done	=> init_all_done,
 
 		move_S_in	=> move_in_S,
-		init_in 	=> init_in,	-- TODO: ?´ê±? init_in ?•„?‹Œê±°ê°™???° 
+		init_in 	=> sig_PE_init_out,	-- TODO: ?´ê±? init_in ?•„?‹Œê±°ê°™???° 
 
 		ctrl_move_S	=> sig_ctrl_move_S,
 		ctrl_send_data => sig_ctrl_send_data,
@@ -347,13 +352,15 @@ begin
 		areset_n_S	=> areset_n_S,
 		move_in_S	=> move_in_S,
 		S_in	=> S_in,
-		init_in	=> init_in,
-		T_in	=> T_in,
+		
+		
+		init_in	=> sig_PE_init_in,
+		T_in	=> sig_PE_T_in,
+		V_in	=> sig_PE_V_in,
+		V_in_alpha	=> sig_PE_V_in_alpha,
+		F_in	=> sig_PE_F_in,
 
 		Max_in	=> Max_in,
-		F_in	=> F_in,
-		V_in	=> V_in,
-		V_in_alpha	=> V_in_alpha,
 
 		S_out	=> S_out,
 		init_out	=> sig_PE_init_out,
@@ -403,6 +410,7 @@ begin
 		initial_init_in	=> init_in,
 		initial_T_in	=> T_in,
 
+		w_en_out	=> sig_FIFO_w_en_in,
 		data_out	=> sig_FIFO_w_data_in
 	) ;
 
@@ -418,7 +426,10 @@ begin
 	port map (
 		clock	=> clock,
 		areset_n	=> areset_n,
+		
+		ctrl_send_data => sig_ctrl_send_data,
 
+		w_en_in	=> sig_FIFO_w_en_in,
 		w_data_in	=> sig_FIFO_w_data_in,
 
 		r_data_out	=> sig_FIFO_r_data_out
